@@ -133,5 +133,5 @@ function play_song(audio) {
   console.log(src);
   
   audio.currentTime = delta_time; 
-  //audio.play();
+  audio.play();
 }
