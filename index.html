@@ -1,20 +1,80 @@
 <head>
+  <script  type="text/javascript" src='mp3/names.js'>  </script>
+  <script  type="text/javascript" src='find_Right_Song.js'>  </script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
 </head>
 <body onload='play_song(document.getElementById("id_audio"))'>
 
-  <script  type="text/javascript" src='mp3/names.js'>  </script>
-  <script  type="text/javascript" src='find_Right_Song.js'>  </script>
-  
-  
+  <div id='play_div' onclick='Play_pause()'>
+    <h1>
+      Radio Atlas
+    </h1>
+    <h2>
+      Musique 100% classique du Moyen Atlas des années 50 60 70 80
+    </h2>
 
-  <!--button onclick='play_song(document.getElementById("id_audio"))'>
-    RUN audio 
-  </button-->
+    <div class="icon_div">
+      <i id ="id_i" class="fa fa-pause-circle-o"></i>
+    </div>
 
-  
-  <br>
-  <audio id= 'id_audio' controls preload="metadata" onended="play_song(this)" style="width:800px;">
-    <source src="" type="audio/mpeg">
-  </audio>
-  
+    <br>
+    <audio id= 'id_audio' controls preload="metadata" onended="play_song(this)" style="width:800px;">
+      <source src="" type="audio/mpeg">
+    </audio>
+  </div>
 </body>
+
+<script>
+  function Play_pause(){
+    const audio = document.getElementById("id_audio");
+    const icon=document.getElementById( "id_i");
+    if (audio.paused ) {
+      icon.setAttribute("class","fa fa-pause-circle-o");
+      play_song(document.getElementById("id_audio"));
+    }
+    else {
+      icon.setAttribute("class","fa fa-play-circle-o");
+      audio.pause();
+    }
+  }
+</script>
+
+<style>
+  body  {
+    background-image: url("https://radioatlas.github.io/files/wood5.jpg");
+    background-size: cover; /* Add this line */
+  }
+  audio {
+    width:100% !important;
+    min-height: 120px;
+    display:block;
+    position:fixed;
+    bottom:0px;
+
+
+
+  }
+  h1 {
+    text-align:center;
+    padding-top: 100px;
+    color:#FFF;
+    font-size:40px;
+
+
+  }
+  h2 {
+    text-align:center;
+    color:#FFF;
+
+  }
+  .fa {
+    font-size:100px;
+    color:#FFF;
+  }
+  .icon_div{
+    display: flex;
+    justify-content: center;
+
+  }
+
+</style>
