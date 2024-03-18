@@ -29,6 +29,8 @@
       <button class="tablinks" onclick="opentab(event, 'DIV_TAB2')">France</button>
       <button class="tablinks" onclick="opentab(event, 'DIV_TAB3')">Arabe</button>
       <button class="tablinks" onclick="opentab(event, 'DIV_TAB4')">Autre</button>
+      <button  id="liveTime"></button>
+      
 
 
 
@@ -440,6 +442,31 @@
       tab1.style.display = "block";
 
     </script>
+    <script>
+      function updateLiveTime() {
+        // Get the current date and time
+        const now = new Date();
+
+        // Get the current hour
+        const hours = now.getHours();
+
+        // Get the current minutes
+        const minutes = now.getMinutes();
+
+        // Format the time
+        const formattedTime = `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+
+            // Display the current time in a specified element
+            document.getElementById('liveTime').innerText = formattedTime;
+          }
+
+      // Initial call to display the current time
+      updateLiveTime();
+
+      // Update the displayed time every minute
+      setInterval(updateLiveTime, 30000); // 30000 milliseconds = 0.5 minute
+    </script>
+
 
 
 
@@ -619,6 +646,9 @@
         padding: 6px 12px;
         border: 1px solid #ccc;
         border-top: none;
+      }
+      #liveTime{
+        float: right;
       }
     </style>
   </body>
