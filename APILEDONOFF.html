@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 Data Sender</title>
+	    <style>
+        #LEDdivID {
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;  
+            border-radius: 50%;  
+			margin-left: 18px;    
+        }
+		#divReceive {
+			margin-left: 22px; 
+		}
+    </style>
+    <script>
+      // Function to send data to ESP32 and display the response
+      function sendCmd(LED) {
+ 
+        var xhr = new XMLHttpRequest();
+      
+        xhr.open("GET", "http://192.168.1.1/sendcmd?cmd="+LED, true);
+
+        // Set up the callback function for when the response is received
+        xhr.onload = function() {
+          if (xhr.status == 200) {
+            // Parse the JSON response
+            try {
+              var response = JSON.parse(xhr.responseText);
+			  //console.log(response.LED );
+			  //console.log(typeof response.LED );
+			  if (response.LED ==0){
+			  document.getElementById("LEDdivID").style.backgroundColor = "green";
+			  }
+			  else if (response.LED ==1)
+			  {
+			  document.getElementById("LEDdivID").style.backgroundColor = "yellow";
+			  }
+    
+            } catch (e) {
+              document.getElementById("status").innerText = xhr.responseText;
+            }
+          } else {
+            document.getElementById("status").innerText = "Error sending data. HTTP Status: " + xhr.status;
+          }
+        };
+
+        // Handle any request errors
+        xhr.onerror = function() {
+          document.getElementById("status").innerText = "Request failed. Please check the ESP32 connection.";
+        };
+
+        // Send the request
+        xhr.send();
+      }
+
+
+      function ReceiveData(){
+        // Fetch data from the API
+        fetch("http://192.168.1.1/getstatus")
+          .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json(); // Parse JSON response
+        })
+          .then(data => {
+			  if (data.ledStatus ==0){
+			  document.getElementById("LEDdivID").style.backgroundColor = "green";
+			  }
+			  else if (data.ledStatus ==1)
+			  {
+			  document.getElementById("LEDdivID").style.backgroundColor = "yellow";
+			  }  
+			  document.getElementById('labelID').innerText = "LED Status "+data.ledStatus ;
+
+        })
+          .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+      }
+
+    </script>
+  </head>
+  <body onload="ReceiveData()">
+    <button onclick='sendCmd("1")'> Turn ON</button> 
+	<button onclick='sendCmd("0")'> Turn OFF</button> 
+	<br> <br>
+	<div id="LEDdivID">  </div>
+	<br> 
+	<div id="divReceive">
+	<button onclick='ReceiveData()'> Read Status</button> 
+	<br>
+	<label id='labelID'></label>
+	</div>
+	
+  </body>
+</html>
